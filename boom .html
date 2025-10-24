@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boom! Game Online - Play Free Retro-inspired Turn-based Battle</title>
+    <meta name="description" content="Play Boom! online for free! Experience retro-inspired, turn-based battles with over 250 quirky fighters and 150+ battlefields. Unleash bizarre weapons and outsmart your rivals!">
+    <meta name="keywords" content="boom game, boom online, turn-based game, retro game, free online game, battle game, multiplayer game">
+    <link rel="canonical" href="https://boom.christmas">
+    <meta property="og:title" content="Boom! Game Online - Play Free">
+    <meta property="og:description" content="Play Boom! online for free! Retro-inspired, turn-based blast fest with quirky weapons and destructible arenas.">
+    <meta property="og:url" content="https://boom.christmas">
+    <meta property="og:type" content="website">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f5f7 0%, #ffffff 100%);
+            min-height: 100vh;
+            color: #1d1d1f;
+        }
+
+        .apple-gradient {
+            background: linear-gradient(135deg, #ff6b6b, #ffa726, #ffd600, #66bb6a, #42a5f5, #ab47bc);
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .glass-dark {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #ff6b6b, #ffa726, #ffd600, #66bb6a, #42a5f5, #ab47bc);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 22px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #ff6b6b, #ffa726);
+            color: white;
+            padding: 12px 32px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s ease;
+            z-index: -1;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .game-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            aspect-ratio: 16/9;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .game-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .fullscreen-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .fullscreen-btn:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: scale(1.1);
+        }
+
+        h1, h2 {
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            background: linear-gradient(135deg, #ff6b6b, #ffa726);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .faq-item {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .game-link {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .game-link::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.7), rgba(255, 167, 38, 0.7));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .game-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .game-link:hover::after {
+            opacity: 1;
+        }
+
+        .game-link:hover .game-link-text {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .game-link-text {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            z-index: 2;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 20px;
+                transition: all 0.3s ease;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                z-index: 100;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="nav-glass sticky top-0 z-50 py-4 px-6 md:px-12">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="flex items-center space-x-2">
+                <div class="w-10 h-10 rounded-lg apple-gradient flex items-center justify-center">
+                    <i class="fas fa-bomb text-white text-xl"></i>
+                </div>
+                <span class="text-xl font-bold gradient-text">Boom!</span>
+            </a>
+            
+            <!-- 移动端菜单按钮 -->
+            <button id="menu-toggle" class="md:hidden text-2xl focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <!-- 导航链接 -->
+            <ul class="nav-links hidden md:flex items-center space-x-8">
+                <li><a href="#" class="font-medium hover:text-gray-600 transition">Home</a></li>
+                <li><a href="#how-to-play" class="font-medium hover:text-gray-600 transition">How to Play</a></li>
+                <li><a href="#features" class="font-medium hover:text-gray-600 transition">Features</a></li>
+                <li><a href="#faq" class="font-medium hover:text-gray-600 transition">FAQ</a></li>
+                <li><a href="#more-games" class="font-medium hover:text-gray-600 transition">More Games</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main class="container mx-auto px-6 md:px-12 py-10">
+        <!-- 游戏标题和iframe -->
+        <section class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 gradient-text">Boom! Game Online</h1>
+            <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-3xl mx-auto">
+                Experience the ultimate retro-inspired, turn-based blast fest where every duel is a test of wits and chaos! 
+                Unleash bizarre weapons and outsmart your rivals in destructible arenas.
+            </p>
+            
+            <!-- 游戏容器 -->
+            <div class="game-container mx-auto">
+                <iframe src="https://games.crazygames.com/en_US/boom-vid/index.html" allowfullscreen></iframe>
+                <button id="fullscreen-button" class="fullscreen-btn">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 游戏介绍和如何玩 -->
+        <section id="how-to-play" class="mb-16">
+            <div class="card p-8 md:p-12">
+                <h2 class="text-3xl font-bold mb-8 gradient-text">How to Play Boom! Game</h2>
+                <div class="space-y-6 text-gray-700">
+                    <p class="text-lg">Boom! is an explosive turn-based game where players take turns to outsmart each other using a variety of weapons and power-ups on destructible battlefields.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-8 mt-8">
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-4">
+                                <div class="feature-icon mt-1"><i class="fas fa-mouse-pointer"></i></div>
+                                <div>
+                                    <h3 class="font-semibold text-xl mb-2">Controls</h3>
+                                    <p>Use your left mouse button to interact with the game UI. Drag and aim using the on-screen controls.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4">
+                                <div class="feature-icon mt-1"><i class="fas fa-running"></i></div>
+                                <div>
+                                    <h3 class="font-semibold text-xl mb-2">Movement</h3>
+                                    <p>Drag the stick to aim your jump direction, then release to leap across the battlefield. You can jump twice per turn!</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-4">
+                                <div class="feature-icon mt-1"><i class="fas fa-rocket"></i></div>
+                                <div>
+                                    <h3 class="font-semibold text-xl mb-2">Attack</h3>
+                                    <p>Choose your weapon (bazooka, gun, poop...), aim with the stick, and shoot! Time your shots carefully to avoid obstacles.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4">
+                                <div class="feature-icon mt-1"><i class="fas fa-gem"></i></div>
+                                <div>
+                                    <h3 class="font-semibold text-xl mb-2">Power-ups</h3>
+                                    <p>Collect and activate special power-ups during your turn to gain advantages over your opponents.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 游戏优势 -->
+        <section id="advantages" class="mb-16">
+            <div class="card p-8 md:p-12">
+                <h2 class="text-3xl font-bold mb-8 gradient-text">Boom! Game Advantages</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="glass p-6 rounded-20 hover:shadow-lg transition">
+                        <div class="feature-icon mb-4"><i class="fas fa-mobile-alt"></i></div>
+                        <h3 class="text-xl font-semibold mb-3">Cross-Platform Play</h3>
+                        <p class="text-gray-700">Play seamlessly on desktop, mobile, or tablet - never miss a battle!</p>
+                    </div>
+                    
+                    <div class="glass p-6 rounded-20 hover:shadow-lg transition">
+                        <div class="feature-icon mb-4"><i class="fas fa-users"></i></div>
+                        <h3 class="text-xl font-semibold mb-3">Multiplayer Mayhem</h3>
+                        <p class="text-gray-700">Challenge friends or compete against players from around the world.</p>
+                    </div>
+                    
+                    <div class="glass p-6 rounded-20 hover:shadow-lg transition">
+                        <div class="feature-icon mb-4"><i class="fas fa-trophy"></i></div>
+                        <h3 class="text-xl font-semibold mb-3">Ranking System</h3>
+                        <p class="text-gray-700">Climb the global leaderboards and prove you're the ultimate Boom! master.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 核心特征 -->
+        <section id="features" class="mb-16">
+            <div class="card p-8 md:p-12">
+                <h2 class="text-3xl font-bold mb-8 gradient-text">Boom! Game Core Features</h2>
+                <div class="grid md:grid-cols-2 gap-10">
+                    <div class="flex items-start space-x-6">
+                        <div class="feature-icon flex-shrink-0"><i class="fas fa-user-ninja"></i></div>
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-3">Quirky Fighters</h3>
+                            <p class="text-lg text-gray-700">Choose from a vast roster of unique characters, each with their own personality and style.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-6">
+                        <div class="feature-icon flex-shrink-0"><i class="fas fa-map"></i></div>
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-3">Multiple Battlefields</h3>
+                            <p class="text-lg text-gray-700">Conquer diverse arenas with different layouts, obstacles, and strategic opportunities.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-6">
+                        <div class="feature-icon flex-shrink-0"><i class="fas fa-bomb"></i></div>
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-3">Bizarre Weapons</h3>
+                            <p class="text-lg text-gray-700">Unleash unconventional arsenal including fart beans and teleport balls to confuse your enemies.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-6">
+                        <div class="feature-icon flex-shrink-0"><i class="fas fa-mountain"></i></div>
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-3">Destructible Arenas</h3>
+                            <p class="text-lg text-gray-700">Shape the battlefield by destroying terrain to create new paths or trap your opponents.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 游戏工作原理 -->
+        <section id="how-it-works" class="mb-16">
+            <div class="card p-8 md:p-12">
+                <h2 class="text-3xl font-bold mb-8 gradient-text">How Boom! Game Works</h2>
+                <div class="space-y-8">
+                    <p class="text-lg text-gray-700">
+                        Boom! operates on a turn-based combat system where players take alternating turns to move, attack, and use items. Each turn consists of several phases that create strategic depth and exciting gameplay. The goal is to eliminate all opponents using skillful aiming, clever movement, and tactical use of the environment.
+                    </p>
+                    
+                    <div class="grid md:grid-cols-4 gap-6 mt-8">
+                        <div class="glass p-6 rounded-20 text-center">
+                            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-pink-500 to-orange-500 rounded-full flex items-center justify-center text-white text-2xl mb-4">1</div>
+                            <h3 class="font-semibold text-lg mb-2">Turn Begins</h3>
+                            <p class="text-gray-700">Your turn starts with a full jump charge and access to all available actions.</p>
+                        </div>
+                        
+                        <div class="glass p-6 rounded-20 text-center">
+                            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-orange-500 to-yellow-500 rounded-full flex items-center justify-center text-white text-2xl mb-4">2</div>
+                            <h3 class="font-semibold text-lg mb-2">Movement Phase</h3>
+                            <p class="text-gray-700">Jump around the battlefield to position yourself strategically.</p>
+                        </div>
+                        
+                        <div class="glass p-6 rounded-20 text-center">
+                            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-yellow-500 to-green-500 rounded-full flex items-center justify-center text-white text-2xl mb-4">3</div>
+                            <h3 class="font-semibold text-lg mb-2">Attack Phase</h3>
+                            <p class="text-gray-700">Aim and fire your weapon at opponents or the environment.</p>
+                        </div>
+                        
+                        <div class="glass p-6 rounded-20 text-center">
+                            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-green-500 to-blue-500 rounded-full flex items-center justify-center text-white text-2xl mb-4">4</div>
+                            <h3 class="font-semibold text-lg mb-2">Turn Ends</h3>
+                            <p class="text-gray-700">Your turn concludes and the next player takes their actions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 常见问题解答 -->
+        <section id="faq" class="mb-16">
+            <div class="card p-8 md:p-12">
+                <h2 class="text-3xl font-bold mb-8 gradient-text">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <div class="faq-item cursor-pointer">
+                        <div class="flex justify-between items-center py-4">
+                            <h3 class="text-xl font-semibold">Is Boom! free to play?</h3>
+                            <i class="fas fa-chevron-down text-lg transition-transform"></i>
+                        </div>
+                        <div class="faq-answer pb-4">
+                            <p class="text-gray-700">Yes! Boom! is completely free to play on any device with a web browser. No downloads required.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item cursor-pointer">
+                        <div class="flex justify-between items-center py-4">
+                            <h3 class="text-xl font-semibold">Can I play Boom! with friends?</h3>
+                            <i class="fas fa-chevron-down text-lg transition-transform"></i>
+                        </div>
+                        <div class="faq-answer pb-4">
+                            <p class="text-gray-700">Absolutely! Boom! supports multiplayer gameplay where you can challenge your friends or play against random opponents online.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item cursor-pointer">
+                        <div class="flex justify-between items-center py-4">
+                            <h3 class="text-xl font-semibold">What devices can I play Boom! on?</h3>
+                            <i class="fas fa-chevron-down text-lg transition-transform"></i>
+                        </div>
+                        <div class="faq-answer pb-4">
+                            <p class="text-gray-700">Boom! works on desktop computers, laptops, tablets, and mobile phones. It's fully responsive and optimized for all screen sizes.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item cursor-pointer">
+                        <div class="flex justify-between items-center py-4">
+                            <h3 class="text-xl font-semibold">How many weapons are available in Boom!?</h3>
+                            <i class="fas fa-chevron-down text-lg transition-transform"></i>
+                        </div>
+                        <div class="faq-answer pb-4">
+                            <p class="text-gray-700">Boom! features a wide variety of quirky weapons, including bazookas, guns, explosive projectiles, and special items like fart beans and teleport balls.</p>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </section>
+
+        <!-- 探索更多游戏 -->
+        <section id="more-games" class="mb-16">
+            <div class="card p-8 md:p-12">
+                <h2 class="text-3xl font-bold mb-8 gradient-text">Explore More Games</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <a href="https://frontwars.shop" class="game-link relative h-60 overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600"></div>
+                        <div class="game-link-text">
+                            <h3 class="text-2xl font-bold mb-2">Front Wars</h3>
+                            <p>Strategic multiplayer warfare</p>
+                        </div>
+                    </a>
+                    
+                    <a href="https://growagarden.mom" class="game-link relative h-60 overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-green-500 to-teal-600"></div>
+                        <div class="game-link-text">
+                            <h3 class="text-2xl font-bold mb-2">Grow a Garden</h3>
+                            <p>Relaxing gardening experience</p>
+                        </div>
+                    </a>
+                    
+                    <a href="https://bloxd.asia" class="game-link relative h-60 overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-cyan-500 to-blue-600"></div>
+                        <div class="game-link-text">
+                            <h3 class="text-2xl font-bold mb-2">Bloxd</h3>
+                            <p>Block-building adventure</p>
+                        </div>
+                    </a>
+                    
+                    <a href="https://takeactions.click" class="game-link relative h-60 overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-red-500 to-orange-600"></div>
+                        <div class="game-link-text">
+                            <h3 class="text-2xl font-bold mb-2">Take Actions</h3>
+                            <p>Fast-paced action game</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-900 text-white py-12 px-6 md:px-12">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <a href="#" class="flex items-center space-x-2 mb-6 md:mb-0">
+                    <div class="w-10 h-10 rounded-lg apple-gradient flex items-center justify-center">
+                        <i class="fas fa-bomb text-white text-xl"></i>
+                    </div>
+                    <span class="text-xl font-bold text-white">Boom!</span>
+                </a>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="text-white hover:text-gray-300 transition"><i class="fab fa-facebook-f text-2xl"></i></a>
+                    <a href="#" class="text-white hover:text-gray-300 transition"><i class="fab fa-twitter text-2xl"></i></a>
+                    <a href="#" class="text-white hover:text-gray-300 transition"><i class="fab fa-instagram text-2xl"></i></a>
+                    <a href="#" class="text-white hover:text-gray-300 transition"><i class="fab fa-youtube text-2xl"></i></a>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">About</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Help Center</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Community</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Legal</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
+                    <p class="text-gray-400 mb-4">Subscribe to get updates on new games and features.</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email" class="px-4 py-2 rounded-l-lg bg-gray-800 border border-gray-700 text-white flex-1 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                        <button class="px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-r-lg hover:opacity-90 transition">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center text-gray-500 pt-8 border-t border-gray-800">
+                <p>&copy; 2023 Boom! Game. All rights reserved.</p>
+                <p class="mt-2">Play responsibly. For entertainment purposes only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 全屏功能
+        const fullscreenButton = document.getElementById('fullscreen-button');
+        const gameContainer = document.querySelector('.game-container');
+        
+        fullscreenButton.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                if (gameContainer.requestFullscreen) {
+                    gameContainer.requestFullscreen();
+                } else if (gameContainer.webkitRequestFullscreen) {
+                    gameContainer.webkitRequestFullscreen();
+                } else if (gameContainer.msRequestFullscreen) {
+                    gameContainer.msRequestFullscreen();
+                }
+                fullscreenButton.innerHTML = '<i class="fas fa-compress"></i>';
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+                fullscreenButton.innerHTML = '<i class="fas fa-expand"></i>';
+            }
+        });
+        
+        // 监听全屏变化
+        document.addEventListener('fullscreenchange', updateFullscreenButton);
+        document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
+        document.addEventListener('msfullscreenchange', updateFullscreenButton);
+        
+        function updateFullscreenButton() {
+            if (document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement) {
+                fullscreenButton.innerHTML = '<i class="fas fa-compress"></i>';
+            } else {
+                fullscreenButton.innerHTML = '<i class="fas fa-expand"></i>';
+            }
+        }
+        
+        // 移动菜单
+        const menuToggle = document.getElementById('menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            menuToggle.innerHTML = navLinks.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+        
+        // FAQ 折叠功能
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const header = item.querySelector('.flex.justify-between');
+            const icon = item.querySelector('i');
+            
+            header.addEventListener('click', () => {
+                item.classList.toggle('active');
+                icon.style.transform = item.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0)';
+            });
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                    
+                    // 关闭移动菜单
+                    if (navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                        menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                    }
+                }
+            });
+        });
+        
+        // 添加滚动时的导航栏效果
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-md');
+                nav.classList.remove('py-4');
+                nav.classList.add('py-3');
+            } else {
+                nav.classList.remove('shadow-md');
+                nav.classList.remove('py-3');
+                nav.classList.add('py-4');
+            }
+        });
+    </script>
+</body>
+</html>
